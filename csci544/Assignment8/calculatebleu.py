@@ -36,22 +36,23 @@ def getNGrams(input, n):
   output = []
   if (len(input) < n):
   	return Counter(output)
-  output = [' '.join(input[i:i+n]) for i in range(len(input)-(n-1))]
+  for i in range(len(input)-(n-1)):
+  	output.append(' '.join(input[i:i+n])) 
   return Counter(output)
 
 def countNGrams(candidate, n, line_number):
 	# print (candidate)
 	candidateNGrams = getNGrams(candidate, n)
 	# print (candidateNGrams)
-	max_count = {}
+	max_ngram_count = {}
 	for reference in references:
 		referenceNGrams = getNGrams(reference[line_number], n)
 		for c_ngram in candidateNGrams:
-			max_count[c_ngram] = max(max_count.get(c_ngram, 0) , referenceNGrams[c_ngram])
+			max_ngram_count[c_ngram] = max(max_ngram_count.get(c_ngram, 0) , referenceNGrams[c_ngram])
 	clip_count = 0
 	ngram_count = 0
 	for c_ngram in candidateNGrams:
-		clip_count = clip_count + min(candidateNGrams[c_ngram], max_count[c_ngram])
+		clip_count = clip_count + min(candidateNGrams[c_ngram], max_ngram_count[c_ngram])
 		ngram_count = ngram_count + candidateNGrams[c_ngram] 
 	return clip_count, ngram_count
 
